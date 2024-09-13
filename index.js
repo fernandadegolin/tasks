@@ -8,8 +8,12 @@ const start = async () => {
             message: "Menu >",
             choices: [
                 {
-                    name: 'Cadastrar Metas',
+                    name: 'Cadastrar metas',
                     value: 'cadastrar',
+                },
+                {
+                    name: 'Listar metas',
+                    value: 'listar',
                 },
                 {
                     name: 'Sair',
@@ -20,8 +24,10 @@ const start = async () => {
 
         switch (option) {
             case 'cadastrar':
+                console.log('Vamos cadastrar')
                 break
             case 'listar':
+                console.log('Vamos listar')
                 break
             case 'sair':
                 return
