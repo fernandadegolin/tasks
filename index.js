@@ -28,15 +28,15 @@ const listarMetas = async () => {
         // instructions: false
     })
 
+    metas.forEach((meta) => {
+        meta.checked = false
+    })
+
 
     if (respostas.length === 0) {
         console.log('Nenhuma meta selecionada')
         return
     }
-
-    metas.forEach((meta) => {
-        meta.checked = false
-    })
 
     respostas.forEach((resposta) => {
         const meta = metas.find((m) => m.value === resposta)
@@ -46,19 +46,36 @@ const listarMetas = async () => {
     })
 }
 
-const metasRealizadas = async () => { 
-    const realizadas = metas.filter((meta)=>{
+const metasRealizadas = async () => {
+    const realizadas = metas.filter((meta) => {
         return meta.checked
     })
 
-    if(realizadas.length === 0){
+    if (realizadas.length === 0) {
         console.log('Não temos metas realizadas')
         return
     }
 
     await select({
-        message: 'Metas realizadas',
+        message: `Metas realizadas -> ${realizadas.lenght}`,
         choices: [...realizadas],
+    })
+}
+
+const metasAbertas = async () => {
+    const abertas = metas.filter((meta) => {
+        return !meta.checked
+    })
+
+
+    if (abertas.length === 0) {
+        console.log('Não temos metas abertas')
+        return
+    }
+
+    await select({
+        message: `Metas abertas -> ${abertas.length}`,
+        choices: [...abertas]
     })
 }
 
@@ -77,6 +94,10 @@ const start = async () => {
                 {
                     name: 'Metas realizadas',
                     value: 'realizadas',
+                },
+                {
+                    name: 'Metas abertas',
+                    value: 'abertas',
                 },
                 {
                     name: 'Listar metas',
@@ -99,6 +120,9 @@ const start = async () => {
                 break
             case 'realizadas':
                 await metasRealizadas()
+                break
+            case 'abertas':
+                await metasAbertas()
                 break
             case 'sair':
                 return
