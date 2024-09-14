@@ -1,7 +1,10 @@
 [
-    {
-        "value" :"Tomar agua",
-        "checked": false
-
-    }
+  {
+    "value": "Tomar agua",
+    "checked": false
+  },
+  {
+    "value": "sair",
+    "checked": true
+  }
 ]

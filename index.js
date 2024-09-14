@@ -20,6 +20,11 @@ const carregarMetas = async ()=>{
         metas = []
     }
 }
+
+const salvarMetas = async ()=>{
+    await fs.writeFile('metas.json', JSON.stringify(metas, null, 2))
+}
+
 const cadastrarMeta = async () => {
 
     const meta = await input({ message: 'Digite sua meta: ' })
@@ -35,6 +40,10 @@ const cadastrarMeta = async () => {
 }
 
 const listarMetas = async () => {
+    if(metas.length === 0){
+        mensagem = "Metas vazias"
+        return
+    }
     const respostas = await checkbox({
         message: ">",
         choices: [...metas,],
@@ -59,6 +68,10 @@ const listarMetas = async () => {
 }
 
 const metasRealizadas = async () => {
+    if(metas.length === 0){
+        mensagem = "Metas vazias"
+        return
+    }
     const realizadas = metas.filter((meta) => {
         return meta.checked
     })
@@ -75,6 +88,10 @@ const metasRealizadas = async () => {
 }
 
 const metasAbertas = async () => {
+    if(metas.length === 0){
+        mensagem = "Metas vazias"
+        return
+    }
     const abertas = metas.filter((meta) => {
         return !meta.checked
     })
@@ -131,10 +148,12 @@ const mostrarMensagem = () => {
 }
 
 const start = async () => {
-    carregarMetas()
+    await carregarMetas()
+    
 
     while (true) {
         mostrarMensagem()
+        await salvarMetas()
 
         const option = await select({
             message: "Menu >",
