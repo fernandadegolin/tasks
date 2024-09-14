@@ -7,6 +7,8 @@ let meta = {
 
 let metas = [meta]
 
+
+
 const cadastrarMeta = async () => {
 
     const meta = await input({ message: 'Digite sua meta: ' })
@@ -25,22 +27,38 @@ const listarMetas = async () => {
         choices: [...metas,],
         // instructions: false
     })
-    
+
 
     if (respostas.length === 0) {
         console.log('Nenhuma meta selecionada')
         return
     }
 
-    metas.find((meta)=>{
+    metas.forEach((meta) => {
         meta.checked = false
     })
 
     respostas.forEach((resposta) => {
-        const meta = metas.find((m) => {
-            return m.value === resposta
-        })
-        meta.checked = true
+        const meta = metas.find((m) => m.value === resposta)
+        if (meta) {
+            meta.checked = true
+        }
+    })
+}
+
+const metasRealizadas = async () => { 
+    const realizadas = metas.filter((meta)=>{
+        return meta.checked
+    })
+
+    if(realizadas.length === 0){
+        console.log('Não temos metas realizadas')
+        return
+    }
+
+    await select({
+        message: 'Metas realizadas',
+        choices: [...realizadas],
     })
 }
 
@@ -55,6 +73,10 @@ const start = async () => {
                 {
                     name: 'Cadastrar metas',
                     value: 'cadastrar',
+                },
+                {
+                    name: 'Metas realizadas',
+                    value: 'realizadas',
                 },
                 {
                     name: 'Listar metas',
@@ -75,6 +97,9 @@ const start = async () => {
             case 'listar':
                 await listarMetas()
                 break
+            case 'realizadas':
+                await metasRealizadas()
+                break
             case 'sair':
                 return
         }
@@ -82,3 +107,4 @@ const start = async () => {
 }
 
 start()
+
