@@ -1,4 +1,5 @@
 const { select, input, checkbox } = require("@inquirer/prompts")
+const fs = require('fs').promises
 
 let mensagem = 'Bem vindo!'
 
@@ -9,7 +10,16 @@ let meta = {
 
 let metas = [meta]
 
+const carregarMetas = async ()=>{
+    try{
+        const dados = await fs.readFile('metas.json', 'utf-8')
+        metas = JSON.parse(dados)
 
+    }
+    catch(error){
+        metas = []
+    }
+}
 const cadastrarMeta = async () => {
 
     const meta = await input({ message: 'Digite sua meta: ' })
@@ -121,7 +131,7 @@ const mostrarMensagem = () => {
 }
 
 const start = async () => {
-    
+    carregarMetas()
 
     while (true) {
         mostrarMensagem()
